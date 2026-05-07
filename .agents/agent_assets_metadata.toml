@@ -1,0 +1,20 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "VaZoF27ZnlNYqPOHfNwp7"
+uri = "file://artifacts/mobile/assets/images/icon.png"
+type = "image"
+title = "nexus aura app icon"
+
+[[generated]]
+id = "mQZJ9328o31AsnGbwMmSC"
+uri = "file://artifacts/mobile/assets/images/adaptive-icon.png"
+type = "image"
+title = "nexus aura adaptive icon"
+
+[[generated]]
+id = "i7ZIpG75o57NddRP0AtLu"
+uri = "file://artifacts/mobile/assets/images/splash.png"
+type = "image"
+title = "nexus aura splash clean"
