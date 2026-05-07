@@ -15,12 +15,18 @@
     },
     "ios": {
       "supportsTablet": false,
+      "bundleIdentifier": "com.nexusaura.mobile",
       "infoPlist": {
         "UIBackgroundModes": ["remote-notification"]
       }
     },
     "android": {
-      "permissions": ["RECEIVE_BOOT_COMPLETED", "VIBRATE"]
+      "package": "com.nexusaura.mobile",
+      "permissions": ["RECEIVE_BOOT_COMPLETED", "VIBRATE"],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#0b141a"
+      }
     },
     "web": {
       "favicon": "./assets/images/icon.png"
@@ -47,6 +53,11 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
     }
   }
 }

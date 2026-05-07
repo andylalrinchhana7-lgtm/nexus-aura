@@ -1,0 +1,25 @@
+{
+  "cli": {
+    "version": ">= 16.0.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_DOMAIN": "10750b2a-cfd4-4564-8167-2092345ee84b-00-3a8gpdrn588g3.sisko.replit.dev"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "EXPO_PUBLIC_DOMAIN": "10750b2a-cfd4-4564-8167-2092345ee84b-00-3a8gpdrn588g3.sisko.replit.dev"
+      }
+    }
+  }
+}
