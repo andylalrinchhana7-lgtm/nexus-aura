@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Nexus Aura",
-    "slug": "mobile",
+    "slug": "nexus-aura",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
