@@ -15,10 +15,7 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.nexusaura.mobile",
-      "infoPlist": {
-        "UIBackgroundModes": ["remote-notification"]
-      }
+      "bundleIdentifier": "com.nexusaura.mobile"
     },
     "android": {
       "package": "com.nexusaura.mobile",
@@ -30,29 +27,6 @@
     },
     "web": {
       "favicon": "./assets/images/icon.png"
-    },
-    "plugins": [
-      [
-        "expo-router",
-        {
-          "origin": "https://replit.com/"
-        }
-      ],
-      "expo-font",
-      "expo-web-browser",
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/images/icon.png",
-          "color": "#00a884",
-          "defaultChannel": "messages",
-          "sounds": []
-        }
-      ]
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
     },
     "extra": {
       "eas": {
