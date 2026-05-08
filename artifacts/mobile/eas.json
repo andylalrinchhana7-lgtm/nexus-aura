@@ -1,7 +1,11 @@
 {
   "build": {
     "preview": {
+      "node": "20.10.0",
       "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
       "env": {
         "NPM_CONFIG_FROZEN_LOCKFILE": "false"
       }
