@@ -10,7 +10,8 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_DOMAIN": "10750b2a-cfd4-4564-8167-2092345ee84b-00-3a8gpdrn588g3.sisko.replit.dev"
+        "EXPO_PUBLIC_DOMAIN": "10750b2a-cfd4-4564-8167-2092345ee84b-00-3a8gpdrn588g3.sisko.replit.dev",
+        "NPM_CONFIG_FROZEN_LOCKFILE": "false"
       }
     },
     "production": {
@@ -18,7 +19,8 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "EXPO_PUBLIC_DOMAIN": "10750b2a-cfd4-4564-8167-2092345ee84b-00-3a8gpdrn588g3.sisko.replit.dev"
+        "EXPO_PUBLIC_DOMAIN": "10750b2a-cfd4-4564-8167-2092345ee84b-00-3a8gpdrn588g3.sisko.replit.dev",
+        "NPM_CONFIG_FROZEN_LOCKFILE": "false"
       }
     }
   }
