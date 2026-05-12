@@ -4,7 +4,6 @@ import requests
 import os
 from flask import Flask, request
 
-# LINE 6 HI EN RAWH: __name__ (underscore pahnih) a awm ngei ngei tur a ni
 app = Flask(__name__)
 
 # 1. API Keys 7
@@ -42,21 +41,20 @@ def send_whatsapp(to, message):
 
 @app.route('/', methods=['POST'])
 def whatsapp_webhook():
-    # Hemi hian UltraMsg atanga message lo lut a man (catch) thin
     data = request.json
     try:
-        message_text = data['data']['body']
-        sender_id = data['data']['from']
-        
-        if message_text.lower().startswith("bot"):
-            query = message_text.replace("bot", "").strip()
-            ai_chhanna = get_ai_response(query)
-            send_whatsapp(sender_id, ai_chhanna)
-    except:
-        pass
+        if data and 'data' in data:
+            message_text = data['data'].get('body', '')
+            sender_id = data['data'].get('from', '')
+            
+            if message_text.lower().startswith("bot"):
+                query = message_text.replace("bot", "").strip()
+                ai_chhanna = get_ai_response(query)
+                send_whatsapp(sender_id, ai_chhanna)
+    except Exception as e:
+        print(f"Error: {e}")
     return "OK", 200
 
 if __name__ == "__main__":
-    # Render port setup
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
