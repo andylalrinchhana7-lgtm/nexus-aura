@@ -1,0 +1,61 @@
+import google.genai as genai
+import random
+import requests
+from flask import Flask, request
+
+app = Flask(name)
+
+# 1. API Keys 7
+api_keys = [
+    "AIzaSyAlDpkpeYccwgB-R8SaA5R1vKJPD1_dg70", 
+    "AIzaSyB5hP0HeZGeycNw7_LEZUvv03TKVBYqUTw", 
+    "AIzaSyDUX4JjX-972MENW-LZPrMPzwRXRB3e55A", 
+    "AIzaSyBVUXS-f8zvCCOEcWoFLxcIpKfCbweyw5E", 
+    "AIzaSyBl7DJ1VkdFWHWoQmb7QW3TqXHsh7653wI", 
+    "AIzaSyCYbCGSrwZjmOuvp4GnHmkYvcUApamdnPA", 
+    "AIzaSyB-sBlu7ZV-mUFkq0Dzj094kI_proUX724"
+]
+
+# 2. UltraMsg Details
+INSTANCE_ID = "instance174706"
+TOKEN = "qrn82ble4nhighdl"
+
+def get_ai_response(user_text):
+    selected_key = random.choice(api_keys)
+    # Model thar hman i duh chuan 'gemini-2.0-flash' tiin thlak rawh
+    client = genai.Client(api_key=selected_key)
+    try:
+        response = client.models.generate_content(
+            model="gemini-1.5-flash", 
+            contents=user_text
+        )
+        return response.text
+    except Exception as e:
+        return "Tlem han nghak lawk rawh u, ka thluak a lum deuh a nih hi!"
+
+def send_whatsapp(to, message):
+    url = f"https://api.ultramsg.com/{INSTANCE_ID}/messages/chat"
+    payload = {"token": TOKEN, "to": to, "body": message}
+    headers = {'content-type': 'application/x-www-form-urlencoded'}
+    requests.post(url, data=payload, headers=headers)
+
+@app.route('/', methods=['POST'])
+def whatsapp_webhook():
+    data = request.json
+    try:
+        message_text = data['data']['body']
+        sender_id = data['data']['from']
+        
+        # 'Bot' tia bul tan message chauh a chhang ang
+        if message_text.lower().startswith("bot"):
+            query = message_text.replace("bot", "").strip()
+            ai_chhanna = get_ai_response(query)
+            send_whatsapp(sender_id, ai_chhanna)
+    except:
+        pass
+    return "OK", 200
+
+if name == "main":
+    print(f"Bot a nung e! Instance: {INSTANCE_ID}")
+    # Pydroid tan debug=False leh use_reloader=False hi a pawimawh
+    app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False)
