@@ -1,42 +1,60 @@
-{
-  "name": "@workspace/mobile",
-  "version": "0.0.0",
-  "private": true,
-  "engines": {
-    "node": ">=20.10.0"
-  },
-  "main": "expo-router/entry",
-  "scripts": {
-    "dev": "expo start",
-    "build": "node scripts/build.js"
-  },
-  "dependencies": {
-    "expo": "~50.0.0",
-    "expo-router": "~3.4.7",
-    "expo-constants": "~15.4.5",
-    "expo-status-bar": "~1.11.1",
-    "expo-linking": "~6.2.2",
-    "expo-web-browser": "~12.8.2",
-    "expo-haptics": "~12.8.1",
-    "expo-blur": "~12.9.2",
-    "expo-font": "~11.10.3",
-    "expo-notifications": "~0.27.6",
-    "expo-splash-screen": "~0.26.4",
-    "expo-asset": "~9.0.2",
-    "@expo-google-fonts/inter": "^0.1.0",
-    "@react-native-async-storage/async-storage": "1.21.0",
-    "@tanstack/react-query": "^5.0.0",
-    "@expo/vector-icons": "^14.0.0",
-    "react": "18.2.0",
-    "react-native": "0.73.6",
-    "react-native-safe-area-context": "4.8.2",
-    "react-native-screens": "~3.29.0",
-    "react-native-gesture-handler": "~2.14.0",
-    "react-native-keyboard-controller": "1.6.1",
-    "react-native-reanimated": "~3.6.2"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "typescript": "^5.3.0"
-  }
-}
+import google.genai as genai
+import random
+import requests
+import os
+from flask import Flask, request
+
+app = Flask(__name__)
+
+api_keys = [
+    "AIzaSyAlDpkpeYccwgB-R8SaA5R1vkJPD1_dg70",
+    "AIzaSyB5HP0HeZGeycNw7_LEZUvv03TKVBYqUTw",
+    "AIzaSyDUX4JjX-972MENW-LZPrMPzwRXRB3e5SA",
+    "AIzaSyBVUXS-f8zvCCOEcWoFLxciPKfCbweyW5E",
+    "AIzaSyB17DJ1VkdFWHWoQmb7QW3TqXHsh7653wI",
+    "AIzaSyCYbCGSrwZjmOuvp4GnHmkYvcuApamdnPA",
+    "AIzaSyB-sB1u7ZV-mUfkqODzj094kI_proUX724"
+]
+
+INSTANCE_ID = "instance174706"
+TOKEN = "qrn82b1e4nhighdl"
+
+def get_ai_response(user_text):
+    selected_key = random.choice(api_keys)
+    client = genai.Client(api_key=selected_key)
+    try:
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=user_text
+        )
+        return response.text
+    except:
+        return "Ka thluak a lum deuh a, nakinah min lo zawt leh rawh."
+
+def send_whatsapp(to, message):
+    url = f"https://api.ultramsg.com/{INSTANCE_ID}/messages/chat"
+    payload = {"token": TOKEN, "to": to, "body": message}
+    headers = {'content-type': 'application/x-www-form-urlencoded'}
+    requests.post(url, data=payload, headers=headers)
+
+@app.route('/', methods=['POST', 'GET'])
+def whatsapp_webhook():
+    if request.method == 'GET':
+        return "Bot is Live!", 200
+        
+    data = request.json
+    try:
+        if data and 'data' in data:
+            msg = data['data'].get('body', '')
+            sender = data['data'].get('from', '')
+            if msg.lower().startswith("bot"):
+                query = msg.replace("bot", "").strip()
+                ans = get_ai_response(query)
+                send_whatsapp(sender, ans)
+    except:
+        pass
+    return "OK", 200
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
