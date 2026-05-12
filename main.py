@@ -4,6 +4,7 @@ import requests
 import os
 from flask import Flask, request
 
+# LINE 6 HI EN RAWH: __name__ (underscore pahnih) a awm ngei ngei tur a ni
 app = Flask(__name__)
 
 # 1. API Keys 7
@@ -23,7 +24,6 @@ TOKEN = "qrn82b1e4nhighdl"
 
 def get_ai_response(user_text):
     selected_key = random.choice(api_keys)
-    # Model thar hman i duh chuan 'gemini-2.0-flash' tiin thlak rawh
     client = genai.Client(api_key=selected_key)
     try:
         response = client.models.generate_content(
@@ -42,12 +42,12 @@ def send_whatsapp(to, message):
 
 @app.route('/', methods=['POST'])
 def whatsapp_webhook():
+    # Hemi hian UltraMsg atanga message lo lut a man (catch) thin
     data = request.json
     try:
         message_text = data['data']['body']
         sender_id = data['data']['from']
         
-        # 'Bot' tia bul tan message chauh a chhang ang
         if message_text.lower().startswith("bot"):
             query = message_text.replace("bot", "").strip()
             ai_chhanna = get_ai_response(query)
@@ -57,5 +57,6 @@ def whatsapp_webhook():
     return "OK", 200
 
 if __name__ == "__main__":
+    # Render port setup
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
