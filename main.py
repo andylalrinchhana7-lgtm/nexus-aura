@@ -1,24 +1,25 @@
 import google.genai as genai
 import random
 import requests
+import os
 from flask import Flask, request
 
-app = Flask(name)
+app = Flask(__name__)
 
 # 1. API Keys 7
 api_keys = [
-    "AIzaSyAlDpkpeYccwgB-R8SaA5R1vKJPD1_dg70", 
-    "AIzaSyB5hP0HeZGeycNw7_LEZUvv03TKVBYqUTw", 
-    "AIzaSyDUX4JjX-972MENW-LZPrMPzwRXRB3e55A", 
-    "AIzaSyBVUXS-f8zvCCOEcWoFLxcIpKfCbweyw5E", 
-    "AIzaSyBl7DJ1VkdFWHWoQmb7QW3TqXHsh7653wI", 
-    "AIzaSyCYbCGSrwZjmOuvp4GnHmkYvcUApamdnPA", 
-    "AIzaSyB-sBlu7ZV-mUFkq0Dzj094kI_proUX724"
+    "AIzaSyAlDpkpeYccwgB-R8SaA5R1vkJPD1_dg70",
+    "AIzaSyB5HP0HeZGeycNw7_LEZUvv03TKVBYqUTw",
+    "AIzaSyDUX4JjX-972MENW-LZPrMPzwRXRB3e5SA",
+    "AIzaSyBVUXS-f8zvCCOEcWoFLxciPKfCbweyW5E",
+    "AIzaSyB17DJ1VkdFWHWoQmb7QW3TqXHsh7653wI",
+    "AIzaSyCYbCGSrwZjmOuvp4GnHmkYvcuApamdnPA",
+    "AIzaSyB-sB1u7ZV-mUfkqODzj094kI_proUX724"
 ]
 
 # 2. UltraMsg Details
 INSTANCE_ID = "instance174706"
-TOKEN = "qrn82ble4nhighdl"
+TOKEN = "qrn82b1e4nhighdl"
 
 def get_ai_response(user_text):
     selected_key = random.choice(api_keys)
@@ -26,7 +27,7 @@ def get_ai_response(user_text):
     client = genai.Client(api_key=selected_key)
     try:
         response = client.models.generate_content(
-            model="gemini-1.5-flash", 
+            model="gemini-1.5-flash",
             contents=user_text
         )
         return response.text
@@ -55,7 +56,6 @@ def whatsapp_webhook():
         pass
     return "OK", 200
 
-if name == "main":
-    print(f"Bot a nung e! Instance: {INSTANCE_ID}")
-    # Pydroid tan debug=False leh use_reloader=False hi a pawimawh
-    app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
