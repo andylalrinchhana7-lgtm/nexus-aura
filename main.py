@@ -6,7 +6,6 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-# 1. API Keys 7
 api_keys = [
     "AIzaSyAlDpkpeYccwgB-R8SaA5R1vkJPD1_dg70",
     "AIzaSyB5HP0HeZGeycNw7_LEZUvv03TKVBYqUTw",
@@ -17,7 +16,6 @@ api_keys = [
     "AIzaSyB-sB1u7ZV-mUfkqODzj094kI_proUX724"
 ]
 
-# 2. UltraMsg Details
 INSTANCE_ID = "instance174706"
 TOKEN = "qrn82b1e4nhighdl"
 
@@ -30,8 +28,8 @@ def get_ai_response(user_text):
             contents=user_text
         )
         return response.text
-    except Exception as e:
-        return "Tlem han nghak lawk rawh u, ka thluak a lum deuh a nih hi!"
+    except:
+        return "Ka thluak a lum deuh a, nakinah min lo zawt leh rawh."
 
 def send_whatsapp(to, message):
     url = f"https://api.ultramsg.com/{INSTANCE_ID}/messages/chat"
@@ -39,20 +37,22 @@ def send_whatsapp(to, message):
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     requests.post(url, data=payload, headers=headers)
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['POST', 'GET'])
 def whatsapp_webhook():
+    if request.method == 'GET':
+        return "Bot is Live!", 200
+        
     data = request.json
     try:
         if data and 'data' in data:
-            message_text = data['data'].get('body', '')
-            sender_id = data['data'].get('from', '')
-            
-            if message_text.lower().startswith("bot"):
-                query = message_text.replace("bot", "").strip()
-                ai_chhanna = get_ai_response(query)
-                send_whatsapp(sender_id, ai_chhanna)
-    except Exception as e:
-        print(f"Error: {e}")
+            msg = data['data'].get('body', '')
+            sender = data['data'].get('from', '')
+            if msg.lower().startswith("bot"):
+                query = msg.replace("bot", "").strip()
+                ans = get_ai_response(query)
+                send_whatsapp(sender, ans)
+    except:
+        pass
     return "OK", 200
 
 if __name__ == "__main__":
